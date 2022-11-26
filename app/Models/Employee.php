@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Student
+ * Class Employee
  *
  * @property int $id
  * @property int $s_user
@@ -14,17 +14,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $surname
  * @property string $first_name
  * @property string $patronymic
+ * @property string $dolgn
  *
  * @property User $user
  *
  * @package App\Models
  */
-class Student extends Model
+class Employee extends Model
 {
     use HasFactory;
 
+    protected $table = 'employee';
     public $timestamps = false;
-    protected $table = 'student';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

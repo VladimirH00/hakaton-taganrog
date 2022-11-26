@@ -31,7 +31,6 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'book' => ['required', 'string', 'max:6'],
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ];
@@ -47,19 +46,7 @@ class LoginRequest extends FormRequest
     public function authenticate()
     {
         $this->ensureIsNotRateLimited();
-        $email = $this->email;
-        $name = $this->book;
-        $user = DB::table('users')->where([['name', '=', "{$name}"], ['email', '=', "{$email}"]])->first();
-        if (!$user) {
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
-        if (!Hash::check($this->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
+
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
