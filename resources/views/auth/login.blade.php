@@ -33,8 +33,8 @@
             <label for="emailReg"><p>E-mail</p></label>
             <input type="text" placeholder="E-mail" name="emailReg" value="{{old('emailReg')?old('emailReg') : ''}}">
 
-            <label for="bookReg"><p>Номер зачётной книжки</p></label>
-            <input type="text" placeholder="Номер зачётной книжки" name="bookReg" value="{{old('bookReg')?old('bookReg') : ''}}">
+            <label for="bookReg"><p>Серия и номер паспорта</p></label>
+            <input type="text" placeholder="Серия и номер паспорта" name="bookReg" value="{{old('bookReg')?old('bookReg') : ''}}">
 
             <label for="passwordReg"><p>Пароль</p></label>
             <input type="password" placeholder="Пароль" name="passwordReg">
@@ -59,9 +59,6 @@
                 @csrf
                 <label for="email"><p>E-mail</p></label>
                 <input type="text" placeholder="E-mail" name="email" value="{{old('email')?old('email') : ''}}">
-
-                <label for="book"><p>Номер зачётной книжки</p></label>
-                <input type="text" placeholder="Номер зачётной книжки" name="book" value="{{old('book')?old('book') : ''}}">
 
                 <label for="password"><p>Пароль</p></label>
                 <input type="password" placeholder="Пароль" name="password" >
