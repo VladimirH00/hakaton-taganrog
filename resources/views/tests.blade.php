@@ -1,4 +1,5 @@
 <?php
+<?php
 /**
  * @var array $lessons
  */
@@ -58,9 +59,9 @@ use App\Models\Employee;
                 <div class="col_in">
                     @foreach($lessons as $lesson)
                         <?php
-                            $oldTime = strtotime($lesson->startLesson->time);
-                            $newTime = date("H:i", strtotime('+90 minutes', $oldTime));
-                            $profile = Employee::query()->where('s_user', '=',  $lesson->userCreator->id)->first();
+                        $oldTime = strtotime($lesson->startLesson->time);
+                        $newTime = date("H:i", strtotime('+90 minutes', $oldTime));
+                        $profile = Employee::query()->where('s_user', '=',  $lesson->userCreator->id)->first();
                         ?>
                         <div class="col_lesson_active">
                             <div class="les_time">

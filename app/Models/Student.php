@@ -33,4 +33,9 @@ class Student extends Model
     {
         return $this->belongsTo(User::class, 's_user');
     }
+
+//    public function groups()
+//    {
+//        return $this->belongsToMany(StudentGroup::class, 'student_group_student', 'user_id', 's_');
+//    }
 }
