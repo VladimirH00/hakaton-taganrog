@@ -1,56 +1,74 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+<?php
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+?>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+@extends('layouts.main')
+@section('styles')
+    <link href="{{ asset('css/reg/log.css') }}" rel="stylesheet">
+@endsection
+@section('scripts')
+    <script src="{{asset('js/reg/reg.js')}}"></script>
+@endsection
+@section('title', 'Авторизация')
+@section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-        <form method="POST" action="{{ route('login') }}">
+    <div class="logo">
+        <p class="reg">Регистрация</p>
+    </div>
+    <div class="image">
+        <img src="{{asset('assets/reg/reg.svg')}}" alt="">
+    </div>
+    <div class="container">
+        <form method="POST" action="{{ route('register') }}">
             @csrf
+            <label for="emailReg"><p>E-mail</p></label>
+            <input type="text" placeholder="E-mail" name="emailReg" value="{{old('emailReg')?old('emailReg') : ''}}">
 
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
+            <label for="bookReg"><p>Номер зачётной книжки</p></label>
+            <input type="text" placeholder="Номер зачётной книжки" name="bookReg" value="{{old('bookReg')?old('bookReg') : ''}}">
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
+            <label for="passwordReg"><p>Пароль</p></label>
+            <input type="password" placeholder="Пароль" name="passwordReg">
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-            </div>
-
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
+            <label for="passwordReg_confirmation"><p>Повторите пароль</p></label>
+            <input type="password" placeholder="Повторите пароль" name="passwordReg_confirmation" >
+            <button type="submit" class="registerbtn">Регистрация</button>
         </form>
-    </x-auth-card>
-</x-guest-layout>
+        <div class="signin">
+            <p>Уже есть аккаунт? <a href="#" class="signBtn">Войдите</a>.</p>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="logo">
+            <p class="reg">Вход</p>
+        </div>
+        <div class="image">
+            <img src="{{asset('assets/reg/login.svg')}}" alt="">
+        </div>
+        <div class="container">
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <label for="email"><p>E-mail</p></label>
+                <input type="text" placeholder="E-mail" name="email" value="{{old('email')?old('email') : ''}}">
+
+                <label for="book"><p>Номер зачётной книжки</p></label>
+                <input type="text" placeholder="Номер зачётной книжки" name="book" value="{{old('book')?old('book') : ''}}">
+
+                <label for="password"><p>Пароль</p></label>
+                <input type="password" placeholder="Пароль" name="password" >
+                <div class="signin"></div>
+                <button type="submit" class="registerbtn">Вход</button>
+            </form>
+            <p class="regbtn">Нет аккаунта? <a href="#" class="regBtn">Зарегистрируйтесь</a>.</p>
+        </div>
+    </div>
+@endsection
