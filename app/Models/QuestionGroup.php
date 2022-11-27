@@ -22,7 +22,7 @@ class QuestionGroup extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'question';
+    protected $table = 'question_group';
 
 
     /**

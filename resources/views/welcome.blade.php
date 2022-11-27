@@ -58,37 +58,27 @@ use App\Models\Employee;
                 <div class="col_in">
                     @foreach($lessons as $lesson)
                         <?php
-                            $oldTime = strtotime($lesson->startLesson->time);
-                            $newTime = date("H:i", strtotime('+90 minutes', $oldTime));
-                            $profile = Employee::query()->where('s_user', '=',  $lesson->userCreator->id)->first();
+                        $oldTime = strtotime($lesson->startLesson->time);
+                        $active = strtotime(date('H:i')) < $oldTime;
+                        $newTime = date("H:i", strtotime('+90 minutes', $oldTime));
+                        $profile = Employee::query()->where('s_user', '=', $lesson->userCreator->id)->first();
                         ?>
-                        <div class="col_lesson_active">
+                        <div class="<?=$active ? 'col_lesson_active' : 'col_lesson'?>">
                             <div class="les_time">
                                 <p>{{date('H:i', $oldTime)}} - {{$newTime}}</p>
-                                <a class="btn_1" href="#">ПЕРЕЙТИ</a>
+                                @if($active)
+                                    <a class="btn_1" href="{{$isEmployee? route('questions', ['id' => $lesson->id]): route('lesson', ['id' => $lesson->id])}}">Перейти</a>
+                                @endif
                             </div>
                             <div class="less_inner">Дисциплина - {{$lesson->subject->name}}
-                                <div class="teacher">Преподаватель - {{$profile->surname}} {{mb_substr($profile->first_name,0,1)}}
+                                <div class="teacher">Преподаватель
+                                    - {{$profile->surname}} {{mb_substr($profile->first_name,0,1)}}
                                     . {{mb_substr($profile->patronymic,0,1)}}.
                                 </div>
                                 <div class="audience">Аудитория - {{$lesson->room}}</div>
                             </div>
                         </div>
                     @endforeach
-                    {{--                    <div class="col_lesson">--}}
-                    {{--                        <div class="col_lesson">--}}
-                    {{--                            <div class="les_time">--}}
-                    {{--                                <p>12:05-13:35</p>--}}
-
-                    {{--                            </div>--}}
-                    {{--                            <div class="less_inner">Русский Язык--}}
-                    {{--                                <div class="teacher">Иванов М.И.--}}
-                    {{--                                </div>--}}
-                    {{--                                <div class="audience">B 315--}}
-                    {{--                                </div>--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
                 </div>
                 <p> - </p>
             </div>

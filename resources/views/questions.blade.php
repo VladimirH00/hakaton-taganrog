@@ -1,15 +1,15 @@
 <?php
-<?php
 /**
- * @var array $lessons
+ * @var array $lesson
  */
 
-use App\Models\Employee;
-
+use App\Models\Employee;use App\Models\StudentQuestions;
+$i = 1;
 ?>
 @extends('layouts.main')
 @section('styles')
     <link href="{{ asset('css/main/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/questions/style.css') }}" rel="stylesheet">
     <link type="Image/x-icon" href="{{asset('/asset/main/Book_logo_project.ico')}}" rel="icon">
 @endsection
 @section('scripts')
@@ -52,51 +52,63 @@ use App\Models\Employee;
     </header>
     <!--   MAIN  -->
     <main class="main">
-        <div class="container">
-            <div class="col_1"></div>
-            <div class="col_2">
-                <div class="less_time">Расписание на {{date('d.m.Y')}}</div>
-                <div class="col_in">
-                    @foreach($lessons as $lesson)
-                        <?php
-                        $oldTime = strtotime($lesson->startLesson->time);
-                        $newTime = date("H:i", strtotime('+90 minutes', $oldTime));
-                        $profile = Employee::query()->where('s_user', '=',  $lesson->userCreator->id)->first();
-                        ?>
-                        <div class="col_lesson_active">
-                            <div class="les_time">
-                                <p>{{date('H:i', $oldTime)}} - {{$newTime}}</p>
-                                <a class="btn_1" href="#">ПЕРЕЙТИ</a>
-                            </div>
-                            <div class="less_inner">Дисциплина - {{$lesson->subject->name}}
-                                <div class="teacher">Преподаватель - {{$profile->surname}} {{mb_substr($profile->first_name,0,1)}}
-                                    . {{mb_substr($profile->patronymic,0,1)}}.
-                                </div>
-                                <div class="audience">Аудитория - {{$lesson->room}}</div>
-                            </div>
-                        </div>
-                    @endforeach
-                    {{--                    <div class="col_lesson">--}}
-                    {{--                        <div class="col_lesson">--}}
-                    {{--                            <div class="les_time">--}}
-                    {{--                                <p>12:05-13:35</p>--}}
-
-                    {{--                            </div>--}}
-                    {{--                            <div class="less_inner">Русский Язык--}}
-                    {{--                                <div class="teacher">Иванов М.И.--}}
-                    {{--                                </div>--}}
-                    {{--                                <div class="audience">B 315--}}
-                    {{--                                </div>--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
+        <div style="background-color: rgba(128, 128, 128, 0.416); padding: 20px; border-radius: 15pt">
+            <form method="post" action="{{route('questions.store', ['id' => $lesson->id])}}">
+                @csrf
+                <div style="margin-bottom: 10pt; display: flex; justify-content: center;">
+                    <label class="form-container-label-header" for="question">Вопрос: </label>
+                    <textarea type="text" name="question"></textarea>
                 </div>
-                <p> - </p>
-            </div>
-            <h1></h1></div>
+                <div>
+                    <div style="margin-bottom: 5pt; display: flex; justify-content: space-between">
+                        <label for="contactChoice1">Ответ 1: </label>
+                        <input type="radio" id="contactChoice1"
+                               name="question-value-true" value="one">
+                        <input type="text" name="one" id="">
+                    </div>
+                    <div style="margin-bottom: 5pt; display: flex; justify-content: space-between">
+                        <label for="contactChoice2">Ответ 2: </label>
+                        <input type="radio" id="contactChoice2"
+                               name="question-value-true" value="two">
+                        <input type="text" name="two" id="">
+                    </div>
 
+                    <div style="margin-bottom: 5pt; display: flex; justify-content: space-between">
+                        <label for="contactChoice3">Ответ 3: </label>
+                        <input type="radio" id="contactChoice3"
+                               name="question-value-true" value="three">
+                        <input type="text" name="three" id="">
+                    </div>
 
+                    <div style="margin-bottom: 5pt; display: flex; justify-content: space-between">
+                        <label for="contactChoice4">Ответ 4: </label>
+                        <input type="radio" id="contactChoice4"
+                               name="question-value-true" value="three">
+                        <input type="text" name="four" id="">
+                    </div>
+                </div>
+                <input class="menu_item_1" style="margin-top: 15pt; float: right" type="submit" value="Добавить">
+            </form>
         </div>
+        @if(!$questions->count())
+            <h3>Вопросы отсутствуют</h3>
+        @endif
+        @foreach($questions as $question)
+            <?php
+            $published = StudentQuestions::query()->where('s_question_group', '=', $question->id)->exists()
+            ?>
+            <div class="test">
+                <p>Вопрос № {{$i++}}</p>
+                <div class="gues">
+                    <p>{{$question->name}}</p>
+                </div>
+                @if(!$published)
+                    <div class="btnGues"
+                         onclick="window.location = '{{route('question.post', ['id'=>$question->id])}}';">Отправить
+                    </div>
+                @endif
+            </div>
+        @endforeach
     </main>
     <!--    FOOTER -->
     <footer class="footer" style="background-color: rgba(128, 128, 128, 0.416);">

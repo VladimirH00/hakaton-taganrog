@@ -6,24 +6,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class StudentQuestions
+ * Class QuestionChoose
  *
- * @property int $id
- * @property int $s_question_group
- * @property int $s_select_group
  *
- * @property QuestionGroup $questionGroup
- * @property  StudentGroup $selectStudentGroup
  *
  * @package App\Models
  */
-class StudentQuestions extends Model
+class QuestionChoose extends Model
 {
     use HasFactory;
-
+    protected $table = 'question_choose';
     public $timestamps = false;
-    protected $table = 'student_question';
-    protected $fillable = ['s_question_group', 's_select_group', 'created_at'];
+    protected $fillable = ['s_student', 's_question_group', 's_question'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 's_student');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,8 +38,8 @@ class StudentQuestions extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function selectStudentGroup()
+    public function question()
     {
-        return $this->belongsTo(StudentGroup::class, 's_select_group');
+        return $this->belongsTo(Question::class, 's_question');
     }
 }

@@ -25,7 +25,7 @@ class Question extends Model
 
     public $timestamps = false;
     protected $table = 'question';
-
+    protected $fillable = ['s_question_group', 'name', 'code', 'is_true'];
 
     /**
      * Получить препода занятия.
