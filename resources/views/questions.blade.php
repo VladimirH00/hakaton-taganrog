@@ -20,7 +20,7 @@ $i = 1;
     <div class="hidden-menu">
         <nav>
             <ul class="hidden-menu-ul">
-                <li><a href="" class="menu_item_5">Личный кабинет</a></li>
+                <li><a href="{{route('personal')}}" class="menu_item_5">Личный кабинет</a></li>
                 <li><a href="" class="menu_item_4">Уведомления</a></li>
                 <li><a href="{{route('logout')}}"
                        class="menu_item_4">Выйти({{\Illuminate\Support\Facades\Auth::user()->name}}</a></li>
@@ -36,7 +36,7 @@ $i = 1;
             <div class="header_menu menu">
                 <nav class="menu_list">
                     <ul class="menu_items">
-                        <li><a href="" class="menu_item">Личный кабинет</a></li>
+                        <li><a href="{{route('personal')}}" class="menu_item">Личный кабинет</a></li>
                         <li><a href="" class="menu_item_1">Уведомления</a></li>
                         <li><input type="submit" class="menu_item_1"
                                    value="Выйти({{\Illuminate\Support\Facades\Auth::user()->name}})"></li>

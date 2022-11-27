@@ -28,10 +28,12 @@ class MainController extends Controller
             $assignment = StudentGroupStudent::query()->where('s_student', '=', $profile->id)->first();
             $group = StudentGroup::query()->find($assignment->s_student_group);
             $assignment = LessonStudentGroup::query()->where('s_student_group', '=', $group->id)->first();
-            $lessons = Lesson::query()->where('id', '=', $assignment->s_lesson)->orderBy('s_start_lesson')->get();
+            $lessons = Lesson::query()->where('id', '=', $assignment->s_lesson)->orderBy('s_start_lesson')
+                ->where('date_begin', '=', date('Y:m:d'))->get();
         } else if (Employee::query()->where('s_user', '=', $user->id)->exists()) {
             $profile = Employee::query()->where('s_user', '=', $user->id)->first();
-            $lessons = Lesson::query()->where('s_user_creator', '=', $user->id)->orderBy('s_start_lesson')->get();
+            $lessons = Lesson::query()->where('s_user_creator', '=', $user->id)
+                ->where('date_begin', '=', date('Y:m:d'))->orderBy('s_start_lesson')->get();
         } else {
             abort(401, 'Пользователь не авторизован');
         }
@@ -126,5 +128,10 @@ class MainController extends Controller
         }
 
         return redirect(route('questions', ['id' => $lesson->id]));
+    }
+
+    public function personal()
+    {
+        return view('personal');
     }
 }

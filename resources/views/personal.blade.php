@@ -4,11 +4,18 @@
  */
 
 use App\Models\Employee;
-
+use App\Models\Student;
+$user = \Illuminate\Support\Facades\Auth::user();
+if (Student::query()->where('s_user', '=', $user->id)->exists()) {
+    $profile = Student::query()->where('s_user', '=', $user->id)->first();
+} else if (Employee::query()->where('s_user', '=', $user->id)->exists()) {
+    $profile = Employee::query()->where('s_user', '=', $user->id)->first();
+}
 ?>
 @extends('layouts.main')
 @section('styles')
     <link href="{{ asset('css/main/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/personal/style.css') }}" rel="stylesheet">
     <link type="Image/x-icon" href="{{asset('/asset/main/Book_logo_project.ico')}}" rel="icon">
 @endsection
 @section('scripts')
@@ -19,7 +26,7 @@ use App\Models\Employee;
     <div class="hidden-menu">
         <nav>
             <ul class="hidden-menu-ul">
-                <li><a href="{{route('personal')}}" class="menu_item_5">Личный кабинет</a></li>
+                <li><a href="" class="menu_item_5">Личный кабинет</a></li>
                 <li><a href="" class="menu_item_4">Уведомления</a></li>
                 <li><a href="{{route('logout')}}"
                        class="menu_item_4">Выйти({{\Illuminate\Support\Facades\Auth::user()->name}}</a></li>
@@ -35,7 +42,7 @@ use App\Models\Employee;
             <div class="header_menu menu">
                 <nav class="menu_list">
                     <ul class="menu_items">
-                        <li><a href="{{route('personal')}}" class="menu_item">Личный кабинет</a></li>
+                        <li><a href="" class="menu_item">Личный кабинет</a></li>
                         <li><a href="" class="menu_item_1">Уведомления</a></li>
                         <li><input type="submit" class="menu_item_1"
                                    value="Выйти({{\Illuminate\Support\Facades\Auth::user()->name}})"></li>
@@ -51,40 +58,21 @@ use App\Models\Employee;
     </header>
     <!--   MAIN  -->
     <main class="main">
+
         <div class="container">
-            <div class="col_1"></div>
-            <div>
-                <div class="less_time">Расписание на {{date('d.m.Y')}}</div>
-                <div style="display: flex; margin-top: 25pt; flex-direction: column; ">
-                    @foreach($lessons as $lesson)
-                        <?php
-                        $oldTime = strtotime($lesson->startLesson->time);
-                        $active = strtotime(date('H:i')) < $oldTime;
-                        $newTime = date("H:i", strtotime('+90 minutes', $oldTime));
-                        $profile = Employee::query()->where('s_user', '=', $lesson->userCreator->id)->first();
-                        ?>
-                        <div class="<?=$active ? 'col_lesson_active' : 'col_lesson'?>" style="border-radius: 15pt; margin-bottom: 10pt">
-                            <div class="les_time">
-                                <p>{{date('H:i', $oldTime)}} - {{$newTime}}</p>
-                                @if($active)
-                                    <a class="btn_1" href="{{$isEmployee? route('questions', ['id' => $lesson->id]): route('lesson', ['id' => $lesson->id])}}">Перейти</a>
-                                @endif
-                            </div>
-                            <div class="less_inner" style="padding: 5pt">Дисциплина - {{$lesson->subject->name}}
-                                <div class="teacher" style="margin-bottom: 5pt">Преподаватель
-                                    - {{$profile->surname}} {{mb_substr($profile->first_name,0,1)}}
-                                    . {{mb_substr($profile->patronymic,0,1)}}.
-                                </div>
-                                <div class="audience">Аудитория - {{$lesson->room}}</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <p> - </p>
+            Личный кабинет
+        </div>
+        <div class="divide">
+            <div class="photo">
+                <img class="prof_phot" src="{{asset('assets/personal/images.svg')}}" alt="Error 404">
             </div>
-            <h1></h1></div>
+            <div class="inform">
+                <div class="filling"><div class="stufff">Ф.И.О. {{$profile->surname}} {{$profile->first_name}} {{$profile->patronymic}}</div>
+                </div>
+                <div class="filling"><img class="tobe" src="{{asset('assets/personal/tobe.png')}}" alt="To be continued...">
+                </div>
 
-
+            </div>
         </div>
     </main>
     <!--    FOOTER -->

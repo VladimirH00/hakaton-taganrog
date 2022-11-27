@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('welcome');
+    Route::get('/personal', [MainController::class, 'personal'])->name('personal');
     Route::get('/lesson/{id}', [MainController::class, 'lesson'])->name('lesson');
     Route::get('/questions/{id}', [MainController::class, 'questions'])->name('questions');
     Route::post('/select-question/{id}', [MainController::class, 'selectQuestion'])->name('questions.select');
